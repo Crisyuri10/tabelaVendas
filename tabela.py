@@ -20,3 +20,6 @@ else:
 # ------------------------- EXIBIÇÃO -------------------------
 st.title("📊 Dados da Página 1")
 st.dataframe(df, use_container_width=True)
+
+
+
