@@ -1,19 +1,15 @@
 import streamlit as st
 import pandas as pd
-import pygsheets
 
 sheet_url = "https://docs.google.com/spreadsheets/d/1wqAJBWdS3jncP455KcJ0qpbJgzhVplOVG-JM4u8MvJU/edit#gid=0"
 aba_nome = "Página1"
 
-# Pega o dict do secret
-credenciais_dict = st.secrets["gcp_service_account"]
+# Conexão com Google Sheets via Streamlit Cloud
+conn = st.experimental_connection("gsheets", type="gsheets")
 
-# Autentica no Google Sheets usando service account
-gc = pygsheets.authorize(service_account_info=credenciais_dict)
+# Lê os dados da aba
+df = conn.read(spreadsheet=sheet_url, worksheet=aba_nome)
 
-# Lê os dados
-aba = gc.open_by_url(sheet_url).worksheet_by_title(aba_nome)
-df = pd.DataFrame(aba.get_all_records())
-
+# Exibição
 st.title("📊 Dados da Página 1")
 st.dataframe(df, use_container_width=True)
