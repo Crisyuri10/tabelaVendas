@@ -1,9 +1,17 @@
 import streamlit as st
 import pandas as pd
 import pygsheets
+import os
 
 # ----------------------- AUTENTICAÇÃO GOOGLE SHEETS -----------------------
-gc = pygsheets.authorize(service_account_info=dict(st.secrets["gcp_service_account"]))
+credenciais_path = "cred.json"
+
+if os.path.exists(credenciais_path):
+    # Ambiente local -> usa o arquivo
+    gc = pygsheets.authorize(service_file=credenciais_path)
+else:
+    # Streamlit Cloud -> usa secrets
+    gc = pygsheets.authorize(service_account_info=dict(st.secrets["gcp_service_account"]))
 
 sheet_url = "https://docs.google.com/spreadsheets/d/1wqAJBWdS3jncP455KcJ0qpbJgzhVplOVG-JM4u8MvJU/edit?gid=0"
 
